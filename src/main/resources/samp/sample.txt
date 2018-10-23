@@ -1,0 +1,20 @@
+val user = User(id = 1L, name = "Mr.X", dateOfBirth = LocalDate.of(1989, 11, 1), email = "mrx@x.com", phoneNumber = "123456", password = "mrxpwd", enabled = true,authorities = listOf("ROLE_USER"))
+userService.save(user).block()
+
+
+/*@Bean
+    fun beans() = beans {
+
+        bean<UserHandler>()
+
+        bean {
+            router {
+                "/userz".nest {
+                    GET("/") { _ -> ref<UserHandler>().findAllUsers() }
+                    GET("/{id}") { req -> ref<UserHandler>().findByEmail(req.pathVariable("id")?.toLong()) }
+                    POST("/") { req -> ref<UserHandler>().save(req.bodyToFlux(User::class.java)) }
+                }
+            }
+        }
+    }
+*/

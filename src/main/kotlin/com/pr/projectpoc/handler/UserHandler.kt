@@ -1,7 +1,7 @@
 package com.pr.projectpoc.handler
 
 import com.pr.projectpoc.helper.ServerResponseHelper.Companion.response
-import com.pr.projectpoc.model.UserDetails
+import com.pr.projectpoc.model.User
 import com.pr.projectpoc.service.UserService
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
@@ -9,10 +9,18 @@ import reactor.core.publisher.Flux
 @Component
 class UserHandler(var userService: UserService) {
 
-    fun findAllUsers() = response(UserDetails::class.java) { userService.findAll() }
+    fun findAllUsers() = response(User::class.java) { userService.findAll() }
 
-    fun findById(id: Long) = response(UserDetails::class.java) { userService.findById(id) }
+    fun findByEmail(id: String) = response(User::class.java) { userService.findByEmail(id) }
 
-    fun save(userDetails: Flux<UserDetails>) = response(Pair::class.java) { userService.save(userDetails).map { lt->Pair(lt.name,lt.phoneNumber) } }
+    fun save(user: Flux<User>) =
+            response(User::class.java) { userService.save(user) }
+
+    fun findAllBasic() =
+            response(Map::class.java)
+            {
+                userService.findAll()
+                        .map { lt -> mapOf("name" to lt.name, "email" to lt.email, "phone" to lt.phoneNumber) }
+            }
 
 }
